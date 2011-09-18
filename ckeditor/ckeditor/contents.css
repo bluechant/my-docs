@@ -21,7 +21,9 @@ pre
 	font-family: YaHei Consolas Hybrid, Arial, Verdana, sans-serif;
 	font-size: 12px;
 	color: #666;
-	margin: 1em
+	border: 1px solid silver;
+	margin: 1em;
+	padding: 0.5em;
 }
 ol,ul,dl
 {

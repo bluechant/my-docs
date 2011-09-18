@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>我的 EC2.html</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="doc.css" />
+</head>
+
+<body>
+<div id="toolbar" style="padding: 5px">
+	<a href="./">Back to article list</a> | <a href="?edit">Edit</a>
+</div>
+
+<div style="padding: 0px 30px"><!-- start --><h1>
+	我的 EC2</h1>
+<ol>
+	<li>
+		安装 CentOS 时注意分区的扩展能力，避免出现磁盘不够用的情况</li>
+	<li>
+		如果需要安装 gcc，那么把光盘做为源来安装，省去下载时间 yum --disablerepo=\* --enablerepo=c5-media install gcc<br />
+		记得先编辑 vi /etc/yum.repos.d/CentOS-Media.repo
+		<p>
+			2011-09-17，周六<br />
+			或者直接把光盘 mount 到 /media/cdrom，或者 /media/CentOS，都可以</p>
+	</li>
+	<li>
+		下载安装 git，在 /etc/profile 中添加 PATH
+		<pre>
+# wget http://kernel.org/pub/software/scm/git/git-1.7.6.tar.bz2
+# cd git-1.7.6
+# ./configure --prefix=/usr/ --with-curl(this is needed when using "git clone http://...")
+# make(or other options...)
+# make install(or other options...) 
+</pre>
+		<p>
+			In order to solve problem "git not compiled with USE_CURL_MULTI" on CentOS, we need to install curl and curl-devel above version 7.16. Open curl official website http://curl.haxx.se/ to download the currently latest version 7.22.0.</p>
+		<pre>
+# yum remove curl curl-devel
+# wget http://curl.haxx.se/download/curl-7.22.0.tar.gz
+# tar xzf curl-7.22.0.tar.gz
+# cd curl-7.22.0
+# make clean
+# ./configure --prefix=/usr/local/curl-7.22.0(not to overwrite old version) --libdir=/usr/lib64/ --enable-shared --prefix=/usr
+# make && make install
+# /usr/local/curl-7.22.0/bin/curl -V
+curl 7.22.0 (x86_64-unknown-linux-gnu) libcurl/7.22.0 OpenSSL/0.9.8b zlib/1.2.3 libidn/0.6.5
+Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtsp smtp smtps telnet tftp
+Features: IDN Largefile NTLM NTLM_WB SSL libz
+</pre>
+	</li>
+	<li>
+		复制 malian.pem 到 ~/.ssh/id_rsa，测试 ssh -T git@github.com</li>
+	<li>
+		同步 my-scripts 版本库。cd setup, git clone git@github.com:mlhch/my-scripts.git .</li>
+	<li>
+		执行 install_apache 安装 httpd
+		<ol>
+			<li>
+				下载 httpd-2.2.19.tar.gz 到 ~/setup/common/apache/</li>
+			<li>
+				wget http://labs.renren.com/apache-mirror/httpd/httpd-2.2.19.tar.gz</li>
+			<li>
+				Dav 配置要点
+				<ol>
+					<li>
+						确定 configure 参数中有 --enable-dav，安装完成后测试 apache 载入模块中有 mod_dav 和 mod_dav_fs<br />
+						# /usr/local/httpd-2.2.19/bin/apachectl -l|grep dav<br />
+						&nbsp; mod_dav.c<br />
+						&nbsp; mod_dav_fs.c</li>
+					<li>
+						DavLockDB 指令不可少</li>
+					<li>
+						确保 httpd 用户能够读写 dav 文件夹</li>
+					<li>
+						最简单是的配置<br />
+						DavLockDB "/var/www/git/DavLock"<br />
+						Alias /git "/var/www/git"<br />
+						<directory var="" www=""><br />
+						&nbsp;&nbsp;&nbsp; Dav On<br />
+						&nbsp;&nbsp;&nbsp; Order Allow,Deny<br />
+						&nbsp;&nbsp;&nbsp; Allow from all<br />
+						&nbsp;&nbsp;&nbsp; AuthType Basic<br />
+						&nbsp;&nbsp;&nbsp; AuthName DAV-git<br />
+						&nbsp;&nbsp;&nbsp; AuthUserFile "/var/www/git/user.passwd"<br />
+						&nbsp;&nbsp;&nbsp; Require valid-user</directory></li>
+					<li>
+						CentOS 默认自带了 cadaver，可以用来测试 dav</li>
+					<li>
+						用 ie 浏览器测试 dav 的正确方法：选择&rdquo;文件－打开－勾选&#39;以 Web 文件夹方式打开&#39;&ldquo;，输入要测试的 dav 的网址，确定。在弹出标题为 Connecting to {IP} 的对话框时，点击取消，否则输入什么都是无效。接下来继续弹出的写有 DAV-git(在 httpd.conf 中配置好的，上述 AuthName 的值) 的对话框时，输入正确的用户名和密码，即应该成功登录。</li>
+				</ol>
+			</li>
+		</ol>
+	</li>
+	<li>
+		执行 install_mysql 安装 mysql
+		<ol>
+			<li>
+				2011-08-07 mysql 版本已是 5.5.15</li>
+			<li>
+				太大了，还是用原来的版本吧，差不了多少</li>
+			<li>
+				在 EC2 上可能需要执行 yum install -y libaio 来解决 error while loading shared libraries: libaio.so.1:</li>
+		</ol>
+	</li>
+	<li>
+		执行 install_php 安装 php
+		<ol>
+			<li>
+				下载 php-5.3.6.tar.gz</li>
+			<li>
+				http://cn.php.net/distributions/php-5.3.6.tar.gz 太慢了，只有几k/秒</li>
+			<li>
+				http://jp.php.net/distributions/php-5.3.6.tar.gz 还可以，60k/秒左右</li>
+			<li>
+				yum install -y libxml2-devel</li>
+			<li>
+				yum install -y curl-devel</li>
+			<li>
+				php 的安装需要变量 $http_dir 去指出 apxs 的路径，因此应该事先执行一遍 install_apache。同样也需要 $mysql_dir，所以先执行 install_mysql 是也必要的。<br />
+				./configure --prefix=$php_dir --with-apxs2=$http_dir/bin/apxs --with-mysql=$mysql_dir --with-curl --with-zlib<br />
+				如果出现错误 "Sorry, I cannot run apxs."，可尝试 yum install -y httpd-devel，至于原因，待查吧。</li>
+			<li>
+				下载 phpMyAdmin 到 /setup/tools/<br />
+				wget http://cdnetworks-kr-2.dl.sourceforge.net/project/phpmyadmin/phpMyAdmin/3.4.3.2/phpMyAdmin-3.4.3.2-all-languages.tar.gz</li>
+		</ol>
+	</li>
+	<li>
+		执行 install_pgsql 安装 postgresql
+		<ol>
+			<li>
+				yum install -y readline-devel</li>
+			<li>
+				yum install -y gcc-c++</li>
+			<li>
+				确保 /setup/conf/pg_hba.conf 存在</li>
+			<li>
+				确保 /setup/conf/phpPgAdmin.config.inc.php 存在</li>
+			<li>
+				下载 phpPgAdmin 到 /setup/tools/</li>
+			<li>
+				./install_pgsql<br />
+				或<br />
+				./install_php --with-http --with-mysql --with-pgsql</li>
+		</ol>
+	</li>
+	<li>
+		执行 install_data，从服务器传输 postgresql 数据表
+		<ol>
+			<li>
+				./install_data --remote-host=50.17.233.63</li>
+		</ol>
+	</li>
+</ol>
+<!-- end --></div>
+
+</body>
+</html>
