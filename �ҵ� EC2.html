@@ -23,12 +23,12 @@
 		是否需要安装 Gnome 桌面环境？<br />
 		通过虚拟机菜单插入光盘，并连接<br />
 		mkdir /media/cdrom && mount /dev/cdrom /media/cdrom<br />
-		yum groupinstall -y "X Window System" --disablerepo=\\\\\\\\* --enablerepo=c6-media<br />
-		yum groupinstall -y "Gnome Desktop Environment" --disablerepo=\\\\\\\\* --enablerepo=c5-media # for CentOS 5.x<br />
-		yum groupinstall -y "Desktop" --disablerepo=\\\\\\\\* --enablerepo=c6-media # for CentOS 6.0<br />
-		yum groupinstall -y "Chinese Support" --disablerepo=\\\\\\\\* --enablerepo=c6-media</li>
+		yum groupinstall -y "X Window System" --disablerepo=\* --enablerepo=c6-media<br />
+		yum groupinstall -y "Gnome Desktop Environment" --disablerepo=\* --enablerepo=c5-media # for CentOS 5.x<br />
+		yum groupinstall -y "Desktop" --disablerepo=\* --enablerepo=c6-media # for CentOS 6.0<br />
+		yum groupinstall -y "Chinese Support" --disablerepo=\* --enablerepo=c6-media</li>
 	<li>
-		如果需要安装 gcc，那么把光盘做为源来安装，省去下载时间 yum --disablerepo=\\\\\\\\* --enablerepo=c5-media install gcc<br />
+		如果需要安装 gcc，那么把光盘做为源来安装，省去下载时间 yum --disablerepo=\* --enablerepo=c5-media install gcc<br />
 		记得先编辑 vi /etc/yum.repos.d/CentOS-Media.repo
 		<p>
 			2011-09-17，周六<br />
@@ -86,7 +86,7 @@ Features: IDN Largefile NTLM NTLM_WB SSL libz
 						最简单是的配置<br />
 						DavLockDB "/var/www/git/DavLock"<br />
 						Alias /git "/var/www/git"<br />
-						<directory var=\"\\"\\\\"\\\\"\\"\" www=\"\\"\\\\"\\\\"\\"\"><br />
+						<directory var="\"\\"\\\\"\\\\"\\"\"" www="\"\\"\\\\"\\\\"\\"\""><br />
 						&nbsp;&nbsp;&nbsp; Dav On<br />
 						&nbsp;&nbsp;&nbsp; Order Allow,Deny<br />
 						&nbsp;&nbsp;&nbsp; Allow from all<br />
