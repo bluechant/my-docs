@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>jQuery - datepicker</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="doc.css" />
+</head>
+
+<body>
+<div id="toolbar" style="padding: 5px">
+	<a href="./">Back to article list</a> | <a href="jQuery+-+datepicker.html?edit">Edit</a>
+</div>
+
+<div style="padding: 0px 30px"><!-- start --><h1>
+	jQuery - datepicker</h1>
+<p>
+	2011-06-23，smshosting 项目用到</p>
+<p>
+	官方文档：<a href="http://docs.jquery.com/UI/Datepicker">http://docs.jquery.com/UI/Datepicker</a></p>
+<p>
+	官方展示：<a href="http://jqueryui.com/demos/datepicker/">http://jqueryui.com/demos/datepicker/</a></p>
+<p>
+	最快速的上手方法是查看官方展示，然后点击页面上展示下面的查看源码链接。</p>
+<pre>
+$(function() {
+&nbsp; $("#datepicker").datepicker();
+});</pre>
+<p>
+	2011-10-14，Laurens 的 costcontrole 项目用到 datetimepicker，jQuery 官方还没有，但已经有人做出了解决办法。</p>
+<p>
+	相关页面：http://trentrichardson.com/examples/timepicker/</p>
+<p>
+	js 文件：http://trentrichardson.com/examples/timepicker/js/jquery-ui-timepicker-addon.js</p>
+<h2>
+	示例步骤：</h2>
+<ol>
+	<li>
+		依次引入<br />
+		< script type="text/javascript" src="resource/jquery-1.6.4.js"><br />
+		< script type="text/javascript" src="resource/jquery-ui.js"><br />
+		< script type="text/javascript" src="resource/jquery.ui.slider.js">// datetimepicker 用到了 slider 来选择时间<br />
+		< script type="text/javascript" src="resource/jquery-ui-timepicker-addon.js"></li>
+	<li>
+		因为 jquery-ui-timepicker-addon.js 中有<br />
+		<pre>
+$.extend($.ui, { timepicker: { version: "0.9.7" } });
+...
+this.hour_slider = $tp.find(&#39;#ui_tpicker_hour_&#39;+ dp_id).slider({
+&nbsp;&nbsp;&nbsp; orientation: "horizontal",
+&nbsp;&nbsp;&nbsp; value: this.hour,
+&nbsp;&nbsp;&nbsp; min: o.hourMin,
+&nbsp;&nbsp;&nbsp; max: hourMax,
+&nbsp;&nbsp;&nbsp; step: o.stepHour,
+&nbsp;&nbsp;&nbsp; slide: function(event, ui) {
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;tp_inst.hour_slider.slider( "option", "value", ui.value);
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;tp_inst._onTimeChange();
+&nbsp;&nbsp;&nbsp; }
+});
+</pre>
+	</li>
+	<li>
+		依次引入<br />
+		< link href="resource/jquery-ui.css" rel="stylesheet" type="text/css" /><br />
+		< link href="resource/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" /></li>
+	<li>
+		使用：
+		<pre>
+jQuery(function(){
+    jQuery(&#39;#datetime&#39;).datetimepicker();
+});</pre>
+	</li>
+	<li>
+		示例：<input id="datetime" /></li>
+</ol>
+<script type="text/javascript" src="resource/jquery-1.6.4.js"></script><script type="text/javascript" src="resource/jquery-ui.js"></script><script type="text/javascript" src="resource/jquery.ui.slider.js"></script><script type="text/javascript" src="resource/jquery-ui-timepicker-addon.js"></script>
+<p>
+	&nbsp;</p>
+<p>
+	&nbsp;</p>
+<p>
+	&nbsp;</p>
+<p>
+	&nbsp;</p>
+<p>
+	<link href="resource/jquery-ui.css" rel="stylesheet" type="text/css" />
+</p>
+<p>
+	&nbsp;</p>
+<p>
+	&nbsp;</p>
+<p>
+	&nbsp;</p>
+<p>
+	<link href="resource/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; }
+.ui-timepicker-div dl dd { margin: -25px 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }	</style>
+	<script type="text/javascript">
+jQuery(function(){
+    jQuery('#datetime').datetimepicker();
+});
+</script></p>
+<p>
+	&nbsp;</p>
+<!-- end --></div>
+
+</body>
+</html>
